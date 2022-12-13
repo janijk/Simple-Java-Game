@@ -1,0 +1,52 @@
+package main.util;
+
+import main.enums.ID;
+import main.objects.GameObject;
+
+import java.awt.*;
+import java.util.LinkedList;
+
+public class Handler {
+    private LinkedList<GameObject> gameObj = new LinkedList<>();
+
+    // Loop through all GameObjects and call their tick() method
+    public void tick(){
+        for (int i = 0 ; i < gameObj.size(); i++){
+            GameObject t = gameObj.get(i);
+            t.tick();
+        }
+    }
+    // Loop through all GameObjects and call their render() method
+    public void render(Graphics graphs){
+        for (int i = 0 ; i < gameObj.size(); i++){
+            GameObject t = gameObj.get(i);
+            t.render(graphs);
+        }
+    }
+
+    public GameObject getGameObject(ID id){
+        for (GameObject g : gameObj){
+            if (g.getId() == id) return g;
+        }
+        return null;
+    }
+
+    public GameObject getGameObject(int indx){
+        return gameObj.get(indx);
+    }
+
+    public LinkedList<GameObject> getGameObjects(){
+        return gameObj;
+    }
+
+    public void addGameObject(GameObject go){
+        gameObj.add(go);
+    }
+
+    public void removeGameObject(GameObject go){
+        gameObj.remove(go);
+    }
+    public void removeAllGameObjects(){
+        gameObj.clear();
+    }
+}

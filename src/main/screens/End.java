@@ -3,7 +3,7 @@ package main.screens;
 import main.Game;
 import main.StatusBar;
 import main.enums.ID;
-import main.enums.STATE;
+import main.enums.State;
 import main.objects.Player;
 import main.util.Handler;
 
@@ -27,7 +27,7 @@ public class End extends MouseAdapter {
             handler.removeAllGameObjects();
             handler.addGameObject(new Player(Game.WIDTH/2, Game.HEIGHT/2, ID.Player, handler, statusBar));
             statusBar.reset();
-            Game.state = STATE.GAME;
+            Game.state = State.GAME;
         }
     }
 

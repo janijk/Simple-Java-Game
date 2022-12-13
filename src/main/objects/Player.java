@@ -3,6 +3,8 @@ package main.objects;
 import main.Game;
 import main.enums.ID;
 import main.StatusBar;
+import main.objects.animations.Collision;
+import main.objects.animations.Trail;
 import main.util.Handler;
 import main.util.KeyInput;
 
@@ -26,18 +28,18 @@ public class Player extends GameObject {
 
         for (int i = 0; i < goList.size(); i++){
             GameObject go = goList.get(i);
-            if (go.getId() == ID.Trail || go.getId() == ID.ShooterEnemy) continue;
+            ID id = go.getId();
+            if (id == ID.Trail || id == ID.ShooterEnemy || id == ID.Collision) continue;
 
+            // Check if Player collides with other GameObject and decrease health accordingly
             if (go != null && getBounds().intersects(go.getBounds())){
-                if (go.getId() == ID.BasicEnemy) {
+                if (id == ID.BasicEnemy || id == ID.SpinnerEnemy || id == ID.WanderingEnemy) {
                     statusBar.decreaseHealth(10);
-                }else if (go.getId() == ID.FollowerEnemy) {
+                }else if (id == ID.FollowerEnemy) {
                     statusBar.decreaseHealth(5);
-                }else if (go.getId() == ID.SpinnerEnemy) {
-                    statusBar.decreaseHealth(10);
-                } else if (go.getId() == ID.Bullet) {
-                    statusBar.decreaseHealth(10);
-                } else continue;
+                }else if (id == ID.Bullet) {
+                    statusBar.decreaseHealth(15);
+                }else continue;
 
                 // Create collision animation and remove colliding object
                 handler.addGameObject(new Collision(x,y,width,height, handler));
@@ -77,7 +79,7 @@ public class Player extends GameObject {
         move();
         collide();
 
-        // Restrict movement beyond screen
+        // Restrict movement to not extend beyond screen
         x = Game.screenLimit(x,0,Game.WIDTH,true);
         y = Game.screenLimit(y,0,Game.HEIGHT,false);
 

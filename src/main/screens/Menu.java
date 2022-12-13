@@ -1,7 +1,9 @@
 package main.screens;
 
 import main.*;
-import main.enums.STATE;
+import main.enums.ID;
+import main.enums.State;
+import main.objects.Player;
 import main.util.Handler;
 
 import java.awt.*;
@@ -9,23 +11,24 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class Menu extends MouseAdapter {
-    private StatusBar statusBar;
     private Handler handler;
+    private StatusBar statusBar;
 
     public Menu(StatusBar statusBar, Handler handler) {
-        this.statusBar = statusBar;
         this.handler = handler;
+        this.statusBar = statusBar;
     }
 
     public void mousePressed(MouseEvent e){
         int mx = e.getX(), my= e.getY();
-        // Mouse clicked at start box?
+        // Mouse clicked at 'start' box
         if (mouseAt(mx,my, Game.WIDTH/2-125,Game.HEIGHT/5,150,60)){
-            Game.state = STATE.GAME;
+            handler.addGameObject(new Player(Game.WIDTH/2, Game.HEIGHT/2, ID.Player, handler, statusBar));
+            Game.state = State.GAME;
         }
-        // Mouse clicked at
+        // Mouse clicked at '' box
         if (mouseAt(mx,my, Game.WIDTH/2-125,Game.HEIGHT/3,150,60)){
-            Game.state = STATE.GAME;
+            //Game.state = State.GAME;
         }
     }
 
@@ -47,6 +50,6 @@ public class Menu extends MouseAdapter {
 
         graphics.setFont(new Font("arial", 1, 20));
         graphics.drawString("Start", Game.WIDTH/2-75,Game.HEIGHT/5+30);
-        graphics.drawString("what?", Game.WIDTH/2-75,Game.HEIGHT/3+30);
+        graphics.drawString("Empty", Game.WIDTH/2-75,Game.HEIGHT/3+30);
     }
 }

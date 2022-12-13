@@ -28,12 +28,15 @@ public class FollowerEnemy extends GameObject {
         for (int i = 0; i < followerList.size(); i++){
             GameObject go = followerList.get(i);
 
-            if (x + width + speedX > go.getX() && x + speedX < go.getX() + go.getWidth() &&
-                    y + height > go.getY() && y < go.getY() + go.getHeight()) {
+            // Check if the next position at x-axis would overlap with object and reverse direction if so
+            if (x + speedX < go.getX() + go.getWidth() && x + width + speedX > go.getX() &&
+                     y < go.getY() + go.getHeight() && y + height > go.getY()){
                 speedX *= -1;
             }
-            if (x + width > go.getX() && x < go.getX() + go.getWidth() &&
-                    y + go.getHeight() + speedY > go.getY() && y + speedY < go.getY() + go.getHeight()) {
+
+            // Check if the next position at y-axis would overlap with object and reverse direction if so
+            if (y + speedY < go.getY() + go.getHeight() && y + height + speedY > go.getY() &&
+                    x < go.getX() + go.getWidth() && x + width > go.getX()) {
                 speedY *= -1;
             }
         }
@@ -41,21 +44,19 @@ public class FollowerEnemy extends GameObject {
 
     @Override
     public void tick() {
-        float diffX = x - player.getX() -8;
-        float diffY = y - player.getY() -8;
-        float dist = (float) Math.sqrt(
-                (x - player.getX()) * (x - player.getX()) + (y - player.getY()) * (y - player.getY())
-        );
+        float diffX = x - player.getX() ;
+        float diffY = y - player.getY() ;
 
+        // Calculate the distance between player and FollowerEnemy
+        float dist = (float) Math.sqrt( diffX * diffX + diffY * diffY );
+
+        // Calculate adjacent x,y position to the players direction from current position
         speedX = (float) ((-1.7/dist) * diffX);
         speedY = (float) ((-1.7/dist) * diffY);
 
         checkCollisionWithOtherFollowers();
         x += speedX;
         y += speedY;
-
-        if (y < 0 || y > Game.HEIGHT-50) speedY *= -1;
-        if (x < 0 || x > Game.WIDTH-40) speedX *= -1;
     }
 
     @Override

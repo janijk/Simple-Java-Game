@@ -3,11 +3,10 @@ package main.objects.enemies;
 import main.Game;
 import main.objects.GameObject;
 import main.enums.ID;
-import main.objects.Trail;
+import main.objects.animations.Trail;
 import main.util.Handler;
 
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
 
 public class BasicEnemy extends GameObject {
     private Handler handler;
@@ -23,10 +22,12 @@ public class BasicEnemy extends GameObject {
         x += speedX;
         y += speedY;
 
+        // Change direction by 180 degrees upon reaching screen boundary
         if (y < 0 || y > Game.HEIGHT-50) speedY *= -1;
         if (x < 0 || x > Game.WIDTH-40) speedX *= -1;
 
-       handler.addGameObject(new Trail(x,y,width,height, 0.1f,ID.Trail,handler,Color.red));
+        // Trailing movement effect
+        handler.addGameObject(new Trail(x,y,width,height, 0.1f,ID.Trail,handler,Color.red));
     }
 
     @Override
@@ -34,5 +35,4 @@ public class BasicEnemy extends GameObject {
         graphics.setColor(Color.red);
         graphics.fillRoundRect((int)x,(int)y,width,height,50,50);
     }
-
 }

@@ -1,6 +1,6 @@
 package main;
 
-import main.enums.STATE;
+import main.enums.State;
 
 import java.awt.*;
 
@@ -30,7 +30,7 @@ public class StatusBar {
 
         // When health hits zero -> end the game
         if (currentHealth <= 0){
-            Game.state = STATE.END;
+            Game.state = State.END;
         }
     }
 

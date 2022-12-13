@@ -1,8 +1,6 @@
 package main;
 
-import main.enums.ID;
-import main.enums.STATE;
-import main.objects.Player;
+import main.enums.State;
 import main.screens.End;
 import main.screens.Menu;
 import main.util.*;
@@ -13,7 +11,7 @@ import java.awt.image.BufferStrategy;
 
 public class Game extends Canvas implements Runnable {
     public static final int WIDTH = 1200, HEIGHT = WIDTH / 12 * 9;
-    public static STATE state;
+    public static State state = State.MENU;
     private int spawnEnemyTimer;
     private boolean running = false;
     private Thread thread;
@@ -25,19 +23,17 @@ public class Game extends Canvas implements Runnable {
 
     public Game() {
         new Window(WIDTH, HEIGHT, "First Game", this);
-        handler = new Handler();
-        statusBar = new StatusBar();
-        state = STATE.MENU;
-        menu = new Menu(statusBar,handler);
-        end = new End(statusBar,handler);
-        keys = new KeyInput();
+        this.handler = new Handler();
+        this.statusBar = new StatusBar();
+        this.menu = new Menu(statusBar, handler);
+        this.end = new End(statusBar,handler);
+        this.keys = new KeyInput();
         spawnEnemyTimer = 100;
         start();
-        initialize();
+        setListeners();
     }
 
-    private void initialize(){
-        handler.addGameObject(new Player(Game.WIDTH/2, Game.HEIGHT/2, ID.Player, handler, statusBar));
+    private void setListeners(){
         addMouseListener(menu);
         addMouseListener(end);
         addKeyListener(keys);
@@ -73,9 +69,7 @@ public class Game extends Canvas implements Runnable {
                 tick();
                 delta--;
             }
-            if (running){
-                render();
-            }
+            if (running) render();
             //frames++;
             if (System.currentTimeMillis() - timer > 1000){
                 timer += 1000;
@@ -88,7 +82,7 @@ public class Game extends Canvas implements Runnable {
 
     // Call update (tick) methods according to current game state
     private void tick(){
-        if (state == STATE.GAME) {
+        if (state == State.GAME) {
             if (spawnEnemyTimer-- <= 0) {
                 handler.addGameObject(EnemyRandomizer.createRandomEnemy(handler));
                 spawnEnemyTimer = 150;
@@ -101,28 +95,28 @@ public class Game extends Canvas implements Runnable {
 
     // Call render methods according to current game state
     private void render(){
-        BufferStrategy bufStrat = getBufferStrategy();
-        if (bufStrat == null) {
+        BufferStrategy buffStrat = getBufferStrategy();
+        if (buffStrat == null) {
             createBufferStrategy(3);
             return;
         }
-        Graphics graph = bufStrat.getDrawGraphics();
+        Graphics graph = buffStrat.getDrawGraphics();
         graph.setColor(Color.black);
         graph.fillRect(0,0,WIDTH,HEIGHT);
 
-        if (state == STATE.GAME) {
+        if (state == State.GAME) {
             handler.render(graph);
             statusBar.render(graph);
-        } else if (state == STATE.MENU) {
+        } else if (state == State.MENU) {
             menu.render(graph);
-        } else if (state == STATE.END) {
+        } else if (state == State.END) {
             handler.render(graph);
             statusBar.render(graph);
             end.render(graph);
         }
 
         graph.dispose();
-        bufStrat.show();
+        buffStrat.show();
     }
 
     // Method to prevent GameObjects from going beyond visible screen
@@ -141,9 +135,5 @@ public class Game extends Canvas implements Runnable {
             val = min;
         }
         return val;
-    }
-
-    public static void main(String[] args) {
-        new Game();
     }
 }

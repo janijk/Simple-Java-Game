@@ -3,15 +3,12 @@ package main.util;
 import main.Game;
 import main.enums.ID;
 import main.objects.GameObject;
-import main.objects.enemies.BasicEnemy;
-import main.objects.enemies.FollowerEnemy;
-import main.objects.enemies.ShooterEnemy;
-import main.objects.enemies.SpinnerEnemy;
+import main.objects.enemies.*;
 
 public class EnemyRandomizer {
 
     // Number of enemies to select from
-    private static int amountOfEnemies = 4;
+    private static int amountOfEnemies = 5;
 
     public static GameObject createRandomEnemy(Handler handler){
         GameObject go = null;
@@ -19,7 +16,7 @@ public class EnemyRandomizer {
         // Randomize switch key
         int num = (int) (Math.random() * amountOfEnemies) +1;
 
-        // Randomize x and y coordinate of enemy
+        // Randomize X and Y coordinate of enemy
         int x = (int) Game.screenLimit((int)(Math.random() * Game.WIDTH),0,Game.WIDTH,true);
         int y = (int) Game.screenLimit((int)(Math.random() * Game.HEIGHT),0,Game.HEIGHT,false);
 
@@ -39,6 +36,8 @@ public class EnemyRandomizer {
             case 4:
                 go = new ShooterEnemy(x, y, handler);
                 break;
+            case 5:
+                go = new WanderingEnemy(x,y);
             default:
                 break;
         }

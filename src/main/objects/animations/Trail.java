@@ -1,10 +1,10 @@
-package main.objects;
+package main.objects.animations;
 
 import main.enums.ID;
+import main.objects.GameObject;
 import main.util.Handler;
 
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
 
 public class Trail extends GameObject {
     private float life, alpha = 0.65f;
@@ -19,7 +19,6 @@ public class Trail extends GameObject {
     }
 
     private AlphaComposite makeTransparent(float alpha){
-
         int type = AlphaComposite.SRC_OVER;
         return AlphaComposite.getInstance(type, alpha);
     }
@@ -40,10 +39,5 @@ public class Trail extends GameObject {
         graphics.fillRoundRect((int)x,(int)y,width, height,50,50);
 
         graphs2d.setComposite(makeTransparent(1));
-    }
-
-    @Override
-    public Rectangle2D getBounds() {
-        return null;
     }
 }

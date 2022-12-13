@@ -2,8 +2,8 @@ package main.objects.enemies;
 
 import main.Game;
 import main.enums.ID;
+import main.objects.Bullet;
 import main.objects.GameObject;
-import main.util.FireBullet;
 import main.util.Handler;
 
 import java.awt.*;
@@ -19,10 +19,12 @@ public class ShooterEnemy extends GameObject {
         directionRandomizer();
     }
 
+    // Randomize the X or Y coordinate to be either 0 or MAX and set direction across the visible screen
     private void directionRandomizer(){
         int axis = (int) (Math.random()*2+1);
         int direction = (int) (Math.random()*2+1);
 
+        // Check which axis was chosen and set the direction
         if (axis == 1) {
             x = direction == 1 ? Game.WIDTH : 0;
             speedX = direction == 1 ? -5 : 5;
@@ -37,11 +39,13 @@ public class ShooterEnemy extends GameObject {
         x += speedX;
         y += speedY;
 
+        // Shoot a bullet at set intervals
         if (shootInterval-- <= 0){
             shootInterval = 50;
-            FireBullet fb = new FireBullet(handler, this, ID.Player);
-            fb.fire();
+            handler.addGameObject(new Bullet(x,y,4,4, handler, ID.Player));
         }
+
+        // Remove ShooterEnemy upon reaching screen boundary
         if (y < 0 || y > Game.HEIGHT || x < 0 || x > Game.WIDTH){
             handler.removeGameObject(this);
         }

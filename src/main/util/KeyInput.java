@@ -14,6 +14,7 @@ public class KeyInput extends KeyAdapter {
     public void keyPressed(KeyEvent e){
         int key = e.getKeyCode();
 
+        // Left - Up - Right - Down arrows
         if (key == 37) keys[0] = true;
         if (key == 38) keys[1] = true;
         if (key == 39) keys[2] = true;
@@ -24,6 +25,7 @@ public class KeyInput extends KeyAdapter {
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
 
+        // Left - Up - Right - Down arrows
         if (key == 37) keys[0] = false;
         if (key == 38) keys[1] = false;
         if (key == 39) keys[2] = false;

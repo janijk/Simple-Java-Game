@@ -20,15 +20,20 @@ public class Menu extends MouseAdapter {
     }
 
     public void mousePressed(MouseEvent e){
-        int mx = e.getX(), my= e.getY();
-        // Mouse clicked at 'start' box
-        if (mouseAt(mx,my, Game.WIDTH/2-125,Game.HEIGHT/5,150,60)){
-            handler.addGameObject(new Player(Game.WIDTH/2, Game.HEIGHT/2, ID.Player, handler, statusBar));
-            Game.state = State.GAME;
-        }
-        // Mouse clicked at '' box
-        if (mouseAt(mx,my, Game.WIDTH/2-125,Game.HEIGHT/3,150,60)){
-            //Game.state = State.GAME;
+        if (Game.state == State.MENU) {
+            int mx = e.getX(), my = e.getY();
+
+            // Mouse clicked at 'start' box
+            if (mouseAt(mx, my, Game.WIDTH / 2 - 125, Game.HEIGHT / 5, 150, 60)) {
+                handler.addGameObject(new Player(Game.WIDTH / 2, Game.HEIGHT / 2, ID.Player, handler, statusBar));
+                Game.state = State.GAME;
+            }
+
+            // Mouse clicked at '' box
+            if (mouseAt(mx, my, Game.WIDTH / 2 - 125, Game.HEIGHT / 3, 150, 60)) {
+                //Game.state = State.GAME;
+            }
+
         }
     }
 

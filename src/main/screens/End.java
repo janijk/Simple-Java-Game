@@ -21,13 +21,17 @@ public class End extends MouseAdapter {
     }
 
     public void mousePressed(MouseEvent e){
-        int mx = e.getX(), my = e.getY();
-        // Restart box click
-        if (mouseAt(mx,my, Game.WIDTH/2-65,Game.HEIGHT/2,150,60)){
-            handler.removeAllGameObjects();
-            handler.addGameObject(new Player(Game.WIDTH/2, Game.HEIGHT/2, ID.Player, handler, statusBar));
-            statusBar.reset();
-            Game.state = State.GAME;
+        if (Game.state == State.END) {
+            int mx = e.getX(), my = e.getY();
+
+            // Restart box click
+            if (mouseAt(mx, my, Game.WIDTH / 2 - 65, Game.HEIGHT / 2, 150, 60)) {
+                handler.removeAllGameObjects();
+                handler.addGameObject(new Player(Game.WIDTH / 2, Game.HEIGHT / 2, ID.Player, handler, statusBar));
+                statusBar.reset();
+                Game.state = State.GAME;
+            }
+
         }
     }
 

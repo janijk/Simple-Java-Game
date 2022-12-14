@@ -11,16 +11,33 @@ public class Handler {
 
     // Loop through all GameObjects and call their tick() method
     public void tick(){
-        for (int i = 0 ; i < gameObj.size(); i++){
-            GameObject t = gameObj.get(i);
-            t.tick();
+        try {
+            for (int i = 0 ; i < gameObj.size(); i++){
+                GameObject t = gameObj.get(i);
+                t.tick();
+            }
+        }catch (IndexOutOfBoundsException e){
+            // Ignore index out of bounds
+            System.out.println("ignored at Handler.tick(): " + e);
+        } catch (NullPointerException npe){
+            // Ignore null pointer
+            System.out.println("ignored at Handler.tick(): " + npe);
         }
     }
+
     // Loop through all GameObjects and call their render() method
     public void render(Graphics graphs){
-        for (int i = 0 ; i < gameObj.size(); i++){
-            GameObject t = gameObj.get(i);
-            t.render(graphs);
+        try {
+            for (int i = 0 ; i < gameObj.size(); i++){
+                GameObject t = gameObj.get(i);
+                t.render(graphs);
+            }
+        }catch (IndexOutOfBoundsException iobe){
+            // Ignore index out of bounds
+            System.out.println("ignored at Handler.render(Graphics graphs): " + iobe);
+        } catch (NullPointerException npe){
+            // Ignore null pointer
+            System.out.println("ignored at Handler.render(Graphics graphs): " + npe);
         }
     }
 
@@ -48,5 +65,12 @@ public class Handler {
     }
     public void removeAllGameObjects(){
         gameObj.clear();
+    }
+
+    public void removeGameObjectsById(ID id){
+        for (int i = 0 ; i < gameObj.size(); i++){
+            GameObject go = gameObj.get(i);
+            if (go.getId() == id) gameObj.remove(go);
+        }
     }
 }

@@ -1,8 +1,10 @@
 package main;
 
 import main.enums.State;
+import main.util.FileWriter;
 
 import java.awt.*;
+import java.io.IOException;
 
 public class StatusBar {
     private int level, currentHealth, initialHealth, green,red;
@@ -30,6 +32,11 @@ public class StatusBar {
 
         // When health hits zero -> end the game
         if (currentHealth <= 0){
+            try {
+                FileWriter.writeInt(level);
+            }catch (IOException e){
+                e.printStackTrace();
+            }
             Game.state = State.END;
         }
     }

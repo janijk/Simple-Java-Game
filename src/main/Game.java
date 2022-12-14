@@ -2,6 +2,7 @@ package main;
 
 import main.enums.State;
 import main.screens.End;
+import main.screens.Info;
 import main.screens.Menu;
 import main.util.*;
 import main.util.Window;
@@ -19,6 +20,7 @@ public class Game extends Canvas implements Runnable {
     private StatusBar statusBar;
     private Menu menu;
     private End end;
+    private Info info;
     private KeyInput keys;
 
     public Game() {
@@ -27,6 +29,7 @@ public class Game extends Canvas implements Runnable {
         this.statusBar = new StatusBar();
         this.menu = new Menu(statusBar, handler);
         this.end = new End(statusBar,handler);
+        this.info = new Info();
         this.keys = new KeyInput();
         spawnEnemyTimer = 100;
         start();
@@ -37,6 +40,7 @@ public class Game extends Canvas implements Runnable {
         addMouseListener(menu);
         addMouseListener(end);
         addKeyListener(keys);
+        addKeyListener(info);
     }
 
     public synchronized void start(){
@@ -84,12 +88,14 @@ public class Game extends Canvas implements Runnable {
     private void tick(){
         if (state == State.GAME) {
             if (spawnEnemyTimer-- <= 0) {
-                handler.addGameObject(EnemyRandomizer.createRandomEnemy(handler));
+                //handler.addGameObject(EnemyRandomizer.createRandomEnemy(handler));
                 spawnEnemyTimer = 150;
                 statusBar.plusLevel();
             }
             handler.tick();
             statusBar.tick();
+        } else if (state == State.INFO) {
+            info.tick();
         }
     }
 
@@ -113,6 +119,8 @@ public class Game extends Canvas implements Runnable {
             handler.render(graph);
             statusBar.render(graph);
             end.render(graph);
+        } else if (state == State.INFO) {
+            info.render(graph);
         }
 
         graph.dispose();

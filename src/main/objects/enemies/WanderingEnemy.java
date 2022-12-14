@@ -11,7 +11,7 @@ public class WanderingEnemy extends GameObject {
 
     public WanderingEnemy(float x, float y) {
         super(x, y, ID.WanderingEnemy, 30, 30);
-        this.timer = 125;
+        this.timer = 150;
         this.velocity = 2;
     }
 
@@ -22,7 +22,7 @@ public class WanderingEnemy extends GameObject {
 
         // When timer is out -> reset timer and set direction to new random point
         if (timer-- <= 0){
-            timer = 125;
+            timer = 150;
 
             // Calculate angle of random point from current point
             float angle = (float) Math.atan2(
@@ -43,6 +43,6 @@ public class WanderingEnemy extends GameObject {
     @Override
     public void render(Graphics graphics) {
         graphics.setColor(Color.CYAN);
-        graphics.drawRect((int) x, (int) y,width,height);
+        graphics.drawRect((int) x, (int) y, width, height);
     }
 }

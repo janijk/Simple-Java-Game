@@ -4,6 +4,7 @@ import main.*;
 import main.enums.ID;
 import main.enums.State;
 import main.objects.Player;
+import main.objects.enemies.BossEnemy;
 import main.util.Handler;
 
 import java.awt.*;
@@ -19,6 +20,7 @@ public class Menu extends MouseAdapter {
         this.statusBar = statusBar;
     }
 
+    @Override
     public void mousePressed(MouseEvent e){
         if (Game.state == State.MENU) {
             int mx = e.getX(), my = e.getY();
@@ -27,11 +29,13 @@ public class Menu extends MouseAdapter {
             if (mouseAt(mx, my, Game.WIDTH / 2 - 125, Game.HEIGHT / 5, 150, 60)) {
                 handler.addGameObject(new Player(Game.WIDTH / 2, Game.HEIGHT / 2, ID.Player, handler, statusBar));
                 Game.state = State.GAME;
+
+                handler.addGameObject(new BossEnemy(handler));
             }
 
-            // Mouse clicked at '' box
+            // Mouse clicked at 'info' box
             if (mouseAt(mx, my, Game.WIDTH / 2 - 125, Game.HEIGHT / 3, 150, 60)) {
-                //Game.state = State.GAME;
+                Game.state = State.INFO;
             }
 
         }
@@ -55,6 +59,6 @@ public class Menu extends MouseAdapter {
 
         graphics.setFont(new Font("arial", 1, 20));
         graphics.drawString("Start", Game.WIDTH/2-75,Game.HEIGHT/5+30);
-        graphics.drawString("Empty", Game.WIDTH/2-75,Game.HEIGHT/3+30);
+        graphics.drawString("Info", Game.WIDTH/2-75,Game.HEIGHT/3+30);
     }
 }

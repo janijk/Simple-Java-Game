@@ -20,16 +20,24 @@ public class End extends MouseAdapter {
         this.handler = handler;
     }
 
+    @Override
     public void mousePressed(MouseEvent e){
         if (Game.state == State.END) {
             int mx = e.getX(), my = e.getY();
 
             // Restart box click
             if (mouseAt(mx, my, Game.WIDTH / 2 - 65, Game.HEIGHT / 2, 150, 60)) {
+                statusBar.reset();
                 handler.removeAllGameObjects();
                 handler.addGameObject(new Player(Game.WIDTH / 2, Game.HEIGHT / 2, ID.Player, handler, statusBar));
-                statusBar.reset();
                 Game.state = State.GAME;
+            }
+
+            // Main menu box click
+            if (mouseAt(mx, my, Game.WIDTH / 2 - 65, Game.HEIGHT / 2+100, 150, 60)) {
+                handler.removeAllGameObjects();
+                statusBar.reset();
+                Game.state = State.MENU;
             }
 
         }
@@ -49,6 +57,7 @@ public class End extends MouseAdapter {
 
         graphics.setColor(Color.lightGray);
         graphics.drawRect(Game.WIDTH/2-65,Game.HEIGHT/2,150,60);
+        graphics.drawRect(Game.WIDTH/2-65,Game.HEIGHT/2+100,150,60);
 
         graphics.setFont(new Font("arial", 1, 40));
         graphics.drawString("Game Over", Game.WIDTH/2-100,Game.HEIGHT/5);
@@ -56,5 +65,7 @@ public class End extends MouseAdapter {
         graphics.setFont(new Font("arial", 1, 20));
         graphics.drawString("Level: " + statusBar.getLevel(), Game.WIDTH/2-50,Game.HEIGHT/4);
         graphics.drawString("Restart", Game.WIDTH/2-30,Game.HEIGHT/2+30);
+
+        graphics.drawString("Menu", Game.WIDTH/2-30,Game.HEIGHT/2+130);
     }
 }

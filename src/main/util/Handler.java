@@ -70,9 +70,13 @@ public class Handler {
     }
 
     public void removeGameObjectsById(ID id){
-        for (int i = 0 ; i < gameObj.size(); i++){
-            GameObject go = gameObj.get(i);
-            if (go.getId() == id) gameObj.remove(go);
+        java.util.List<GameObject> cache = gameObj.stream()
+                .filter(g -> g.getId() == id).collect(Collectors.toList());
+
+        for (int i = 0 ; i < cache.size(); i++){
+            GameObject go = cache.get(i);
+            addGameObject(new Collision(go.getX(),go.getY(),go.getWidth(),go.getHeight(),this));
+            gameObj.remove(go);
         }
     }
 
@@ -85,7 +89,6 @@ public class Handler {
             addGameObject(new Collision(go.getX(),go.getY(),go.getWidth(),go.getHeight(),this));
             gameObj.remove(go);
         }
-
     }
 
     public int amountOfGameObjects(){

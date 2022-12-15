@@ -39,6 +39,10 @@ public class Player extends GameObject {
                     statusBar.decreaseHealth(5);
                 }else if (id == ID.Bullet) {
                     statusBar.decreaseHealth(15);
+                }else if(id == ID.BossEnemy){
+                    statusBar.decreaseHealth(5);
+                    handler.addGameObject(new Collision(x,y,width,height, handler));
+                    continue;
                 }else continue;
 
                 // Create collision animation and remove colliding object

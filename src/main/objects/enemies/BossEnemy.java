@@ -6,28 +6,33 @@ import main.enums.ID;
 import main.enums.State;
 import main.objects.Bullet;
 import main.objects.GameObject;
+import main.objects.animations.Images;
 import main.util.EnemyRandomizer;
 import main.util.Handler;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class BossEnemy extends GameObject {
     private int stage, rounds, timer, spawnEnemyTimer, shootInterval, shotsFired, speedInc;
     private float angle;
     private Handler handler;
     private StatusBar statusBar;
+    private BufferedImage bossImg;
 
     public BossEnemy(Handler handler, StatusBar statusBar) {
         super(Game.WIDTH/2, -50, ID.BossEnemy, 45, 45);
         this.handler = handler;
         this.statusBar = statusBar;
         speedX = 0;
-        speedY = 1;
+        speedY = 0.6f;
         this.stage = 1;
         this.angle = 270;
         this.rounds = -1;
+        this.timer = 300;
         this.shootInterval = 15;
         this.spawnEnemyTimer = 50;
+        bossImg =  Images.getImage(1,1,64,64 ); // Get the right image
     }
 
     @Override
@@ -40,7 +45,7 @@ public class BossEnemy extends GameObject {
         if (stage == 1){
             if (shotsFired++ >= 1000) nextStage(75);
 
-            if (y == 75) stop();
+            if (y >= 75) stop();
 
             // Shoot a bullet at set intervals
             if (shootInterval-- <= 0){
@@ -49,7 +54,7 @@ public class BossEnemy extends GameObject {
             }
 
         } else if (stage == 2){
-            if (rounds == 3) nextStage(200);
+            if (rounds == 3) nextStage(250);
 
             if (angle++ > 360){
                 angle = 0;
@@ -62,7 +67,11 @@ public class BossEnemy extends GameObject {
 
             // Spawn basic enemies at set intervals
             if (spawnEnemyTimer-- <= 0) {
-                handler.addGameObject(new BasicEnemy((int) x, (int) y,handler));
+                if (Math.random() >= 0.5) {
+                    handler.addGameObject(new BasicEnemy((int) x, (int) y, handler));
+                } else {
+                    handler.addGameObject(new BasicEnemy((int) (x * -1), (int) (y * -1), handler));
+                }
                 spawnEnemyTimer = 50;
             }
 
@@ -121,7 +130,7 @@ public class BossEnemy extends GameObject {
             // Move boss out of visible screen and wrap up boss fight
             speedY = -1;
             if (y < -30 && rounds++ > 200){
-                handler.removeGameObject(this);
+                handler.removeAllExceptPlayer();
                 statusBar.plusLevel();
                 Game.state = State.GAME;
             }
@@ -131,8 +140,10 @@ public class BossEnemy extends GameObject {
 
     @Override
     public void render(Graphics graphics) {
-        graphics.setColor(Color.red);
-        graphics.fillRoundRect((int)x,(int)y,width,height,50,50);
+        /*graphics.setColor(Color.red);
+        graphics.fillRoundRect((int)x,(int)y,width,height,50,50);*/
+
+        graphics.drawImage(bossImg, (int) x, (int) y,null);
     }
 
     private boolean moveToStartingLocation(){

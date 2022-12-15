@@ -1,6 +1,7 @@
 package main.objects;
 
 import main.enums.ID;
+import main.objects.animations.Images;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -10,15 +11,17 @@ public abstract class GameObject {
     protected float x, y, speedX, speedY;
     protected ID id;
     protected int width, height;
+    protected Images images;
     private static int amountOfGameObjects;
     private int InstanceId;
 
-    public GameObject(float x, float y, ID id, int width, int height) {
+    public GameObject(float x, float y, ID id, int width, int height/*, Images images*/) {
         this.x = x;
         this.y = y;
         this.id = id;
         this.width = width;
         this.height = height;
+        this.images = images;
         this.InstanceId = ++amountOfGameObjects;
     }
 

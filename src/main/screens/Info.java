@@ -39,7 +39,9 @@ public class Info extends KeyAdapter {
 
         graphics.setFont(new Font("arial", 1, 20));
         graphics.drawString("Avoid being hit by enemies", Game.WIDTH/2-80,Game.HEIGHT/5+30);
-        graphics.drawString("Use arrow keys to move", Game.WIDTH/2-80,Game.HEIGHT/4+30);
+        graphics.drawString("Use arrow keys to move", Game.WIDTH/2-80,Game.HEIGHT/5+60);
+        graphics.drawString("Boss fight every 20th level", Game.WIDTH/2-80,Game.HEIGHT/5+90);
+
 
         graphics.setFont(new Font("arial", 1, 30));
         graphics.drawString("High score:", Game.WIDTH/2-100,Game.HEIGHT/2+30);

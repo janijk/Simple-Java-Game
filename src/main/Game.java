@@ -1,6 +1,7 @@
 package main;
 
 import main.enums.State;
+import main.objects.animations.Images;
 import main.objects.enemies.BossEnemy;
 import main.screens.End;
 import main.screens.Info;
@@ -10,6 +11,8 @@ import main.util.Window;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -36,9 +39,10 @@ public class Game extends Canvas implements Runnable {
         this.info = new Info();
         this.keys = new KeyInput();
         spawnEnemyTimer = 100;
-        bossLevels = new ArrayList<>(Arrays.asList("10", "40", "60"));
+        bossLevels = new ArrayList<>(Arrays.asList("5", "40", "60", "80", "100"));
         start();
         setListeners();
+        loadTextures();
     }
 
     private void setListeners(){
@@ -46,6 +50,21 @@ public class Game extends Canvas implements Runnable {
         addMouseListener(end);
         addKeyListener(keys);
         addKeyListener(info);
+    }
+
+    private void loadTextures(){
+        /*BufferedImageLoader loader = new BufferedImageLoader();
+
+        try {
+            buffImg = loader.loadImage("Devil.png");
+        }catch (IOException ioe){
+            System.out.println("Exception ignored: " + ioe);
+        }
+
+        images = new Images(buffImg);
+
+        boss = images.getImage(1,1,32,32 );
+*/
     }
 
     public synchronized void start(){

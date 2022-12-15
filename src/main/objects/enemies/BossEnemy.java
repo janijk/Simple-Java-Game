@@ -68,9 +68,12 @@ public class BossEnemy extends GameObject {
             // Spawn basic enemies at set intervals
             if (spawnEnemyTimer-- <= 0) {
                 if (Math.random() >= 0.5) {
-                    handler.addGameObject(new BasicEnemy((int) x, (int) y, handler));
+                    GameObject go = new BasicEnemy((int) x, (int) y, handler);
+                    go.setSpeedY(5 * -1);
+                    go.setSpeedX(5 * -5);
+                    handler.addGameObject(go);
                 } else {
-                    handler.addGameObject(new BasicEnemy((int) (x * -1), (int) (y * -1), handler));
+                    handler.addGameObject(new BasicEnemy((int) x, (int) y, handler));
                 }
                 spawnEnemyTimer = 50;
             }

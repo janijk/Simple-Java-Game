@@ -1,9 +1,12 @@
 package main.objects.enemies;
 
 import main.Game;
+import main.StatusBar;
 import main.enums.ID;
+import main.enums.State;
 import main.objects.Bullet;
 import main.objects.GameObject;
+import main.util.EnemyRandomizer;
 import main.util.Handler;
 
 import java.awt.*;
@@ -12,15 +15,17 @@ public class BossEnemy extends GameObject {
     private int stage, rounds, timer, spawnEnemyTimer, shootInterval, shotsFired, speedInc;
     private float angle;
     private Handler handler;
+    private StatusBar statusBar;
 
-    public BossEnemy(Handler handler) {
+    public BossEnemy(Handler handler, StatusBar statusBar) {
         super(Game.WIDTH/2, -50, ID.BossEnemy, 45, 45);
         this.handler = handler;
+        this.statusBar = statusBar;
         speedX = 0;
         speedY = 1;
-        this.stage = 2; ////////////////////// SET STAGE TO 1 ON PROD
+        this.stage = 1;
         this.angle = 270;
-        this.rounds = 2; ////////////////////// SET ROUNDS TO -1 ON PROD
+        this.rounds = -1;
         this.shootInterval = 15;
         this.spawnEnemyTimer = 50;
     }
@@ -62,7 +67,7 @@ public class BossEnemy extends GameObject {
             }
 
         } else if (stage == 3) {
-            if (rounds == 2) nextStage(75); ////////////////////// SET ROUNDS TO 15 ON PROD
+            if (rounds == 15) nextStage(75);
             
             if (rounds == 0) handler.removeGameObjectsById(ID.BasicEnemy);                
 
@@ -85,12 +90,41 @@ public class BossEnemy extends GameObject {
             if (x < 5 || x > Game.WIDTH-70) speedX *= -1;
 
         } else if (stage == 4) {
-            if (rounds == 15) nextStage(75);
+            if (rounds == 13 && shotsFired >= 1500) nextStage(75);
 
-            if (rounds == 0 && moveToStartingLocation()) rounds++;
+            if (rounds == 0 && moveToStartingLocation()) {
+                shotsFired = 0;
+                rounds++;
+            }
+
+            if (rounds > 0) {
+                // Spawn two random enemies at set intervals until rounds reach 13
+                if (shotsFired++ % 50 == 0 && rounds <= 12) { //////////////////
+                    handler.addGameObject(EnemyRandomizer.createRandomEnemy(handler));
+                    handler.addGameObject(EnemyRandomizer.createRandomEnemy(handler));
+                    rounds++;
+                }
+
+                // Shoot a bullet at set intervals
+                if (shootInterval-- <= 0) {
+                    shootInterval = 20;
+                    handler.addGameObject(new Bullet(x, y, 4, 4, handler, ID.Player));
+                }
+            }
+
+            // Ensure that after round 11 at least 23 random enemies exists
+            if (rounds > 11 && handler.amountOfGameObjects() < 25){
+                handler.addGameObject(EnemyRandomizer.createRandomEnemy(handler));
+            }
 
         } else if (stage == 5) {
-            // FINAL STAGE
+            // Move boss out of visible screen and wrap up boss fight
+            speedY = -1;
+            if (y < -30 && rounds++ > 200){
+                handler.removeGameObject(this);
+                statusBar.plusLevel();
+                Game.state = State.GAME;
+            }
         }
 
     }

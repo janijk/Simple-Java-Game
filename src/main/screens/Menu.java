@@ -29,8 +29,6 @@ public class Menu extends MouseAdapter {
             if (mouseAt(mx, my, Game.WIDTH / 2 - 125, Game.HEIGHT / 5, 150, 60)) {
                 handler.addGameObject(new Player(Game.WIDTH / 2, Game.HEIGHT / 2, ID.Player, handler, statusBar));
                 Game.state = State.GAME;
-
-                handler.addGameObject(new BossEnemy(handler));
             }
 
             // Mouse clicked at 'info' box

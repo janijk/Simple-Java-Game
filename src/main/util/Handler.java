@@ -2,9 +2,11 @@ package main.util;
 
 import main.enums.ID;
 import main.objects.GameObject;
+import main.objects.animations.Collision;
 
 import java.awt.*;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 public class Handler {
     private LinkedList<GameObject> gameObj = new LinkedList<>();
@@ -72,5 +74,21 @@ public class Handler {
             GameObject go = gameObj.get(i);
             if (go.getId() == id) gameObj.remove(go);
         }
+    }
+
+    public void removeAllExceptPlayer(){
+        java.util.List<GameObject> cache = gameObj.stream()
+                .filter(g -> g.getId() != ID.Player).collect(Collectors.toList());
+
+        for (int i = 0 ; i < cache.size(); i++){
+            GameObject go = cache.get(i);
+            addGameObject(new Collision(go.getX(),go.getY(),go.getWidth(),go.getHeight(),this));
+            gameObj.remove(go);
+        }
+
+    }
+
+    public int amountOfGameObjects(){
+        return gameObj.size();
     }
 }

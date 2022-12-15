@@ -1,6 +1,7 @@
 package main;
 
 import main.enums.State;
+import main.objects.enemies.BossEnemy;
 import main.screens.End;
 import main.screens.Info;
 import main.screens.Menu;
@@ -9,11 +10,14 @@ import main.util.Window;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Game extends Canvas implements Runnable {
     public static final int WIDTH = 1200, HEIGHT = WIDTH / 12 * 9;
     public static State state = State.MENU;
     private int spawnEnemyTimer;
+    private ArrayList<String> bossLevels;
     private boolean running = false;
     private Thread thread;
     private Handler handler;
@@ -32,6 +36,7 @@ public class Game extends Canvas implements Runnable {
         this.info = new Info();
         this.keys = new KeyInput();
         spawnEnemyTimer = 100;
+        bossLevels = new ArrayList<>(Arrays.asList("10", "40", "60"));
         start();
         setListeners();
     }
@@ -86,14 +91,27 @@ public class Game extends Canvas implements Runnable {
 
     // Call update (tick) methods according to current game state
     private void tick(){
-        if (state == State.GAME) {
-            if (spawnEnemyTimer-- <= 0) {
-                //handler.addGameObject(EnemyRandomizer.createRandomEnemy(handler));
-                spawnEnemyTimer = 150;
-                statusBar.plusLevel();
+        if (state == State.GAME || state == State.BOSSFIGHT) {
+
+            // Activate boss fight at set levels
+            if (state != State.BOSSFIGHT && bossLevels.contains(String.valueOf(statusBar.getLevel()))){
+                handler.removeAllExceptPlayer();
+                handler.addGameObject(new BossEnemy(handler, statusBar));
+                state = State.BOSSFIGHT;
+
+            }else if(state != State.BOSSFIGHT){
+
+                // Spawn enemies at set intervals
+                if (spawnEnemyTimer-- <= 0) {
+                    handler.addGameObject(EnemyRandomizer.createRandomEnemy(handler));
+                    spawnEnemyTimer = 150;
+                    statusBar.plusLevel();
+                }
             }
+
             handler.tick();
             statusBar.tick();
+
         } else if (state == State.INFO) {
             info.tick();
         }
@@ -110,7 +128,7 @@ public class Game extends Canvas implements Runnable {
         graph.setColor(Color.black);
         graph.fillRect(0,0,WIDTH,HEIGHT);
 
-        if (state == State.GAME) {
+        if (state == State.GAME || state == State.BOSSFIGHT) {
             handler.render(graph);
             statusBar.render(graph);
         } else if (state == State.MENU) {

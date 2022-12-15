@@ -1,5 +1,5 @@
 package main.enums;
 
 public enum State {
-    MENU, GAME, END, INFO
+    MENU, GAME, END, INFO, BOSSFIGHT
 }

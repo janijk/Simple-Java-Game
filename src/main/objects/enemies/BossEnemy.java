@@ -21,7 +21,7 @@ public class BossEnemy extends GameObject {
     private BufferedImage bossImg;
 
     public BossEnemy(Handler handler, StatusBar statusBar) {
-        super(Game.WIDTH/2, -50, ID.BossEnemy, 45, 45);
+        super(Game.WIDTH/2, -60, ID.BossEnemy, 50, 50);
         this.handler = handler;
         this.statusBar = statusBar;
         speedX = 0;
@@ -29,7 +29,7 @@ public class BossEnemy extends GameObject {
         this.stage = 1;
         this.angle = 270;
         this.rounds = -1;
-        this.timer = 300;
+        this.timer = 150;
         this.shootInterval = 15;
         this.spawnEnemyTimer = 50;
         bossImg =  Images.getImage(1,1,64,64 ); // Get the right image
@@ -48,9 +48,9 @@ public class BossEnemy extends GameObject {
             if (y >= 75) stop();
 
             // Shoot a bullet at set intervals
-            if (shootInterval-- <= 0){
+            if (shootInterval-- <= 0 && y >= 75){
                 shootInterval = 15;
-                handler.addGameObject(new Bullet(x,y,4,4, handler, ID.Player));
+                handler.addGameObject(new Bullet(x+32,y+32,4,4, handler, ID.Player));
             }
 
         } else if (stage == 2){
@@ -68,9 +68,9 @@ public class BossEnemy extends GameObject {
             // Spawn basic enemies at set intervals
             if (spawnEnemyTimer-- <= 0) {
                 if (Math.random() >= 0.5) {
-                    GameObject go = new BasicEnemy((int) x, (int) y, handler);
+                    GameObject go = new BasicEnemy((int) x+32, (int) y+32, handler);
                     go.setSpeedY(5 * -1);
-                    go.setSpeedX(5 * -5);
+                    go.setSpeedX(5 * -1);
                     handler.addGameObject(go);
                 } else {
                     handler.addGameObject(new BasicEnemy((int) x, (int) y, handler));
@@ -120,7 +120,7 @@ public class BossEnemy extends GameObject {
                 // Shoot a bullet at set intervals
                 if (shootInterval-- <= 0) {
                     shootInterval = 20;
-                    handler.addGameObject(new Bullet(x, y, 4, 4, handler, ID.Player));
+                    handler.addGameObject(new Bullet(x+32, y+32, 4, 4, handler, ID.Player));
                 }
             }
 
@@ -145,7 +145,6 @@ public class BossEnemy extends GameObject {
     public void render(Graphics graphics) {
         /*graphics.setColor(Color.red);
         graphics.fillRoundRect((int)x,(int)y,width,height,50,50);*/
-
         graphics.drawImage(bossImg, (int) x, (int) y,null);
     }
 

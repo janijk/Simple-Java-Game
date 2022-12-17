@@ -2,25 +2,44 @@ package main.util;
 
 import main.enums.ID;
 import main.objects.GameObject;
+import main.objects.animations.Collision;
 
 import java.awt.*;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 public class Handler {
     private LinkedList<GameObject> gameObj = new LinkedList<>();
 
     // Loop through all GameObjects and call their tick() method
     public void tick(){
-        for (int i = 0 ; i < gameObj.size(); i++){
-            GameObject t = gameObj.get(i);
-            t.tick();
+        try {
+            for (int i = 0 ; i < gameObj.size(); i++){
+                GameObject t = gameObj.get(i);
+                t.tick();
+            }
+        }catch (IndexOutOfBoundsException e){
+            // Ignore index out of bounds
+            System.out.println("ignored at Handler.tick(): " + e);
+        } catch (NullPointerException npe){
+            // Ignore null pointer
+            System.out.println("ignored at Handler.tick(): " + npe);
         }
     }
+
     // Loop through all GameObjects and call their render() method
     public void render(Graphics graphs){
-        for (int i = 0 ; i < gameObj.size(); i++){
-            GameObject t = gameObj.get(i);
-            t.render(graphs);
+        try {
+            for (int i = 0 ; i < gameObj.size(); i++){
+                GameObject t = gameObj.get(i);
+                t.render(graphs);
+            }
+        }catch (IndexOutOfBoundsException iobe){
+            // Ignore index out of bounds
+            System.out.println("ignored at Handler.render(Graphics graphs): " + iobe);
+        } catch (NullPointerException npe){
+            // Ignore null pointer
+            System.out.println("ignored at Handler.render(Graphics graphs): " + npe);
         }
     }
 
@@ -48,5 +67,31 @@ public class Handler {
     }
     public void removeAllGameObjects(){
         gameObj.clear();
+    }
+
+    public void removeGameObjectsById(ID id){
+        java.util.List<GameObject> cache = gameObj.stream()
+                .filter(g -> g.getId() == id).collect(Collectors.toList());
+
+        for (int i = 0 ; i < cache.size(); i++){
+            GameObject go = cache.get(i);
+            addGameObject(new Collision(go.getX(),go.getY(),go.getWidth(),go.getHeight(),this));
+            gameObj.remove(go);
+        }
+    }
+
+    public void removeAllExceptPlayer(){
+        java.util.List<GameObject> cache = gameObj.stream()
+                .filter(g -> g.getId() != ID.Player).collect(Collectors.toList());
+
+        for (int i = 0 ; i < cache.size(); i++){
+            GameObject go = cache.get(i);
+            addGameObject(new Collision(go.getX(),go.getY(),go.getWidth(),go.getHeight(),this));
+            gameObj.remove(go);
+        }
+    }
+
+    public int amountOfGameObjects(){
+        return gameObj.size();
     }
 }

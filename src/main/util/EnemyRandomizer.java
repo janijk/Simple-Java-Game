@@ -17,8 +17,8 @@ public class EnemyRandomizer {
         int num = (int) (Math.random() * amountOfEnemies) +1;
 
         // Randomize X and Y coordinate of enemy
-        int x = (int) Game.screenLimit((int)(Math.random() * Game.WIDTH),0,Game.WIDTH,true);
-        int y = (int) Game.screenLimit((int)(Math.random() * Game.HEIGHT),0,Game.HEIGHT,false);
+        int x = (int) Game.screenLimit((int)(Math.random() * Game.WIDTH-50),0,Game.WIDTH,true);
+        int y = (int) Game.screenLimit((int)(Math.random() * Game.HEIGHT-100),0,Game.HEIGHT,false);
 
         // Randomize SpinnerEnemy's radius
         float radius = (float) ((Math.random() + 1) * 60);

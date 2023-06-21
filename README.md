@@ -11,10 +11,11 @@
 * [Sources](#sources)
 
 ## Introduction
-abc
+2D game where you must dodge various spawning enemies as long as you can. Game progresses level by
+level at steady interval and every so often there is a boss level.
 
 ## Features
-abc
+Windowed single thread game using java.AWT.
 
 ## Technologies
 - Java
@@ -23,4 +24,4 @@ abc
 [@Jani](https://github.com/janijk)<br />
 
 ## Sources
-abc
+[@RealTutsGML](https://www.youtube.com/@RealTutsGML/videos)<br />

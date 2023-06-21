@@ -13,10 +13,10 @@ public class EnemyRandomizer {
     public static GameObject createRandomEnemy(Handler handler){
         GameObject go = null;
 
-        // Randomize switch key
+        // Randomize the switch key
         int num = (int) (Math.random() * amountOfEnemies) +1;
 
-        // Randomize X and Y coordinate of enemy
+        // Randomize X and Y coordinate of an enemy
         int x = (int) Game.screenLimit((int)(Math.random() * Game.WIDTH-50),0,Game.WIDTH,true);
         int y = (int) Game.screenLimit((int)(Math.random() * Game.HEIGHT-100),0,Game.HEIGHT,false);
 

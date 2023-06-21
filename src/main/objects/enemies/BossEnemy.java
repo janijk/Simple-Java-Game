@@ -42,6 +42,7 @@ public class BossEnemy extends GameObject {
         x += speedX;
         y += speedY;
 
+        // Stage 1 of boss level
         if (stage == 1){
             if (shotsFired++ >= 1000) nextStage(75);
 
@@ -53,6 +54,7 @@ public class BossEnemy extends GameObject {
                 handler.addGameObject(new Bullet(x+32,y+32,4,4, handler, ID.Player));
             }
 
+        // Stage 2 of boss level
         } else if (stage == 2){
             if (rounds == 3) nextStage(250);
 
@@ -78,6 +80,7 @@ public class BossEnemy extends GameObject {
                 spawnEnemyTimer = 50;
             }
 
+        // Stage 3 of boss level
         } else if (stage == 3) {
             if (rounds == 15) nextStage(75);
             
@@ -101,6 +104,7 @@ public class BossEnemy extends GameObject {
             if (y < 5 || y > Game.HEIGHT-100) speedY *= -1;
             if (x < 5 || x > Game.WIDTH-70) speedX *= -1;
 
+        // Stage 4 of boss level
         } else if (stage == 4) {
             if (rounds == 13 && shotsFired >= 1500) nextStage(75);
 
@@ -129,6 +133,7 @@ public class BossEnemy extends GameObject {
                 handler.addGameObject(EnemyRandomizer.createRandomEnemy(handler));
             }
 
+        // Stage 5 of boss level
         } else if (stage == 5) {
             // Move boss out of visible screen and wrap up boss fight
             speedY = -1;

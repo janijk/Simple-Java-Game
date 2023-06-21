@@ -29,8 +29,6 @@ public class Game extends Canvas implements Runnable {
     private End end;
     private Info info;
     private KeyInput keys;
-    private Images images;
-    private BufferedImage buffImg;
 
     public Game() {
         new Window(WIDTH, HEIGHT, "First Game", this);
@@ -41,7 +39,7 @@ public class Game extends Canvas implements Runnable {
         this.info = new Info();
         this.keys = new KeyInput();
         spawnEnemyTimer = 100;
-        bossLevels = new ArrayList<>(Arrays.asList("5", "40", "60", "80", "100"));
+        bossLevels = new ArrayList<>(Arrays.asList("10", "40", "60", "80", "100"));
         start();
         setListeners();
         loadTextures();
@@ -56,17 +54,11 @@ public class Game extends Canvas implements Runnable {
 
     private void loadTextures(){
         BufferedImageLoader loader = new BufferedImageLoader();
-
         try {
-            buffImg = loader.loadImage("Devil.png");
+            new Images(loader.loadImage("Devil.png"));
         }catch (IOException ioe){
             System.out.println("Exception ignored: " + ioe);
         }
-
-        images = new Images(buffImg);
-
-        //boss = images.getImage(1,1,32,32 );
-
     }
 
     public synchronized void start(){
